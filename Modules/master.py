@@ -591,14 +591,18 @@ def Equivalent_Width(wave,flux,errors,snr):
     return (equivs,equiverr)
 
 def Decrement_Model(equivs,equiverr):
+    
+#This function is already pretty commented but I'll add some more I guess
 
     import pandas as pd
     import numpy as np
 
     # Reading in the density and temperature models
-    modelpath = '/Users/ballanr/Desktop/Research/DR15/Density_Temp_Files/Profile Test.csv'
+    modelpath = '/Users/Table/Desktop/Research/Hunter/DR15/Density_Temp_Files/Profile Test.csv'
     openmodel = pd.read_csv(modelpath)
     cols = openmodel.columns
+    
+#Converts the columns series to a list
     headers = cols.tolist()
 
     equivs = np.asarray(equivs)
@@ -608,6 +612,8 @@ def Decrement_Model(equivs,equiverr):
     Chi = []
 
     # Calculations
+    
+#Calculates Chi squared for each column
     for i in range(len(cols)):
 
         chi_squared = 0
@@ -629,12 +635,17 @@ def Decrement_Model(equivs,equiverr):
             chi_squared += numerator / denominator
 
         # Append information to Chi
+
+#not exactly sure what's happening here
+#which headers start with 1?
         if headers[i].startswith('1'):
             Chi.append((headers[i][0:4],headers[i][6:],chi_squared))
         
         else:
             Chi.append((headers[i][0:3],headers[i][4:],chi_squared))
 
+
+#I also don't understand what's happening here
     x = min(c for (a,b,c) in Chi)
 
     for index, item in enumerate(Chi):
@@ -736,7 +747,7 @@ def KDE_Plot(filepath):
     ''' Output '''
 
     ##### Save to local
-    plt.savefig('/Users/ballanr/Desktop/Research/DR15/Plots/KDE_StrongEmitters.png',bbox_inches='tight',dpi=300)
+    plt.savefig('/Users/Table/Desktop/Research/Hunter/DR15/Plots/KDE_StrongEmitters.png',bbox_inches='tight',dpi=300)
 
     ##### Save to server
     #plt.savefig('/Volumes/CoveyData/APOGEE_Spectra/Richard/DR15/Plots/KDE_Emitters.pdf',bbox_inches='tight',dpi=300)
@@ -748,12 +759,14 @@ def Brackett_Decrement_Plot(plate,mjd,fiber):
     import numpy as np
 
     # Importing Kwan and Fischer models
-    profiles = '/Users/ballanr/Desktop/Research/DR15/Density_Temp_Files/Profile Test.csv'
+    profiles = '/Users/Table/Desktop/Research/Hunter/DR15/Density_Temp_Files/Profile Test.csv'
     openprofile = pd.read_csv(profiles)
     cols = openprofile.columns
     headers = cols.tolist()
 
     # Opening spectral file
+    
+#makes all the fibers 3 digits
     if len(str(fiber)) == 2:
         fiber = '0' + str(fiber)
     
@@ -764,10 +777,14 @@ def Brackett_Decrement_Plot(plate,mjd,fiber):
         fiber = str(fiber)
 
     #serverpath = '/Volumes/CoveyData/APOGEE_Spectra/Richard/DR15/Spectra Files/Emitters/'
-    serverpath = '/Users/ballanr/Desktop/Research/DR15/Spectra Files/Emitters/'
+
+#sets up reading the csv files in emitters folder
+    serverpath = '/Users/Table/Desktop/Hunter/Research/DR15/Emitters/'
     filepath = serverpath + str(plate) + '-' + str(mjd) + '-' + str(fiber) + '.csv'
     openfile = pd.read_csv(filepath)
 
+#I'm not exactly sure how this works, I don't know how pandas works
+#I'm assuming this is making individual lists for each variable?
     wave = openfile['Wavelength']
     flux = openfile['Flux']
     error = openfile['Error']
@@ -780,7 +797,11 @@ def Brackett_Decrement_Plot(plate,mjd,fiber):
     equivs = np.asarray(equivs)
     errors = np.asarray(errors)
 
+
     ''' Chi Squared and Best Fit Model '''
+    
+# Which piece is index and which piece is x? I'm pretty sure it's the
+# individual return variables
     index, x = Decrement_Model(equivs,errors)
 
     if index.startswith('1'):
@@ -802,6 +823,8 @@ def Brackett_Decrement_Plot(plate,mjd,fiber):
 
     ''' Plotting '''
 
+
+#I know nothing about plotting. Look this up!!
     plt.figure(figsize=(13,10))
 
     #plt.errorbar(np.arange(11,21,1),equivs,errors,color='green',ecolor='red',capsize=5,label='Original')
