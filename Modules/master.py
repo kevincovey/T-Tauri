@@ -598,8 +598,9 @@ def Decrement_Model(equivs,equiverr):
     import numpy as np
 
     # Reading in the density and temperature models
-    #modelpath = '/Users/Table/Desktop/Research/Hunter/DR15/Density_Temp_Files/Profile Test.csv'
-    modelpath = '/Users/ballanr/Desktop/Research/DR15/Density_Temp_Files/Profile Test.csv'
+    
+    modelpath = '/Users/Table/Desktop/Research/Hunter/DR15/Density_Temp_Files/Profile Test.csv'
+    #modelpath = '/Users/ballanr/Desktop/Research/DR15/Density_Temp_Files/Profile Test.csv'
     openmodel = pd.read_csv(modelpath)
     cols = openmodel.columns
     
@@ -761,8 +762,8 @@ def Brackett_Decrement_Plot(plate,mjd,fiber):
     import numpy as np
 
     # Importing Kwan and Fischer models
-    #profiles = '/Users/Table/Desktop/Research/Hunter/DR15/Density_Temp_Files/Profile Test.csv'
-    profiles = '/Users/ballanr/Desktop/Research/DR15/Density_Temp_Files/Profile Test.csv'
+    profiles = '/Users/Table/Desktop/Research/Hunter/DR15/Density_Temp_Files/Profile Test.csv'
+    #profiles = '/Users/ballanr/Desktop/Research/DR15/Density_Temp_Files/Profile Test.csv'
     openprofile = pd.read_csv(profiles)
     cols = openprofile.columns
     headers = cols.tolist()
@@ -782,8 +783,8 @@ def Brackett_Decrement_Plot(plate,mjd,fiber):
     #serverpath = '/Volumes/CoveyData/APOGEE_Spectra/Richard/DR15/Spectra Files/Emitters/'
 
 #sets up reading the csv files in emitters folder
-    #serverpath = '/Users/Table/Desktop/Hunter/Research/DR15/Emitters/'
-    serverpath = '/Users/ballanr/Desktop/Research/DR15/Spectra Files/Emitters/'
+    serverpath = '/Users/Table/Desktop/Research/Hunter/DR15/Emitters/'
+    #serverpath = '/Users/ballanr/Desktop/Research/DR15/Spectra Files/Emitters/'
     filepath = serverpath + str(plate) + '-' + str(mjd) + '-' + str(fiber) + '.csv'
     openfile = pd.read_csv(filepath)
 
@@ -828,7 +829,7 @@ def Brackett_Decrement_Plot(plate,mjd,fiber):
     ''' Plotting '''
 
 
-#I know nothing about plotting. Look this up!!
+#I am currently figuring out how this works. 
     plt.figure(figsize=(13,10))
 
     #plt.errorbar(np.arange(11,21,1),equivs,errors,color='green',ecolor='red',capsize=5,label='Original')
@@ -851,7 +852,9 @@ def Brackett_Decrement_Plot(plate,mjd,fiber):
 
     ##### Save to local
     #plt.savefig('/Users/ballanr/Desktop/Research/DR15/Plots/Decrements/' + savestring,bbox_inches='tight',dpi=300)
-    plt.savefig('/Users/ballanr/Desktop/testprofile.png',bbox_inches='tight',dpi=300)
+    
+    plt.savefig('/Users/Table/Desktop/Research/Hunter/DR15/Plots/KDE_StrongEmitters.png',bbox_inches='tight',dpi=300)
+    #plt.savefig('/Users/ballanr/Desktop/testprofile.png',bbox_inches='tight',dpi=300)
     
     ##### Save to server
     #plt.savefig('/Volumes/CoveyData/APOGEE_Spectra/Richard/DR15/Plots/Decrements/' + savestring,bbox_inches='tight',dpi=300)
@@ -1009,7 +1012,9 @@ def Scholars_Week_Plots(plot):
         plt.savefig('/Users/ballanr/Desktop/test.png',bbox_inches='tight',dpi=300)
 
 
-Master_Catalog('/Users/ballanr/Desktop/Research/DR15/Master_File_List.csv')
+#Master_Catalog('/Users/ballanr/Desktop/Research/DR15/Master_File_List.csv')
+
+
 #Scholars_Week_Plots('Density')
 
 # import itertools
