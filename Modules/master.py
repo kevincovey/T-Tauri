@@ -853,8 +853,8 @@ def Brackett_Decrement_Plot(plate,mjd,fiber):
     ##### Save to local
     #plt.savefig('/Users/ballanr/Desktop/Research/DR15/Plots/Decrements/' + savestring,bbox_inches='tight',dpi=300)
     
-    plt.savefig('/Users/Table/Desktop/Research/Hunter/DR15/Plots/KDE_StrongEmitters.png',bbox_inches='tight',dpi=300)
-    #plt.savefig('/Users/ballanr/Desktop/testprofile.png',bbox_inches='tight',dpi=300)
+    #plt.savefig('/Users/Table/Desktop/Research/Hunter/DR15/Plots/KDE_StrongEmitters.png',bbox_inches='tight',dpi=300)
+    plt.savefig('/Users/ballanr/Desktop/testprofile.png',bbox_inches='tight',dpi=300)
     
     ##### Save to server
     #plt.savefig('/Volumes/CoveyData/APOGEE_Spectra/Richard/DR15/Plots/Decrements/' + savestring,bbox_inches='tight',dpi=300)
