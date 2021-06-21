@@ -1,0 +1,11 @@
+name: APOGEEaccretion
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - jupyter
+  - numpy
+  - pandas
+  - scipy
+  - astropy
+prefix: /Users/coveyk/opt/anaconda3/envs/APOGEEaccretion
