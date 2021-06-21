@@ -599,8 +599,8 @@ def Decrement_Model(equivs,equiverr):
 
     # Reading in the density and temperature models
     
-    modelpath = '/Users/Table/Desktop/Research/Hunter/DR15/Density_Temp_Files/Profile Test.csv'
-    #modelpath = '/Users/ballanr/Desktop/Research/DR15/Density_Temp_Files/Profile Test.csv'
+    #modelpath = '/Users/Table/Desktop/Research/Hunter/DR15/Density_Temp_Files/Profile Test.csv'
+    modelpath = '/Users/ballanr/Desktop/Research/DR15/Density_Temp_Files/Profile Test.csv'
     openmodel = pd.read_csv(modelpath)
     cols = openmodel.columns
     
@@ -762,8 +762,8 @@ def Brackett_Decrement_Plot(plate,mjd,fiber):
     import numpy as np
 
     # Importing Kwan and Fischer models
-    profiles = '/Users/Table/Desktop/Research/Hunter/DR15/Density_Temp_Files/Profile Test.csv'
-    #profiles = '/Users/ballanr/Desktop/Research/DR15/Density_Temp_Files/Profile Test.csv'
+    #profiles = '/Users/Table/Desktop/Research/Hunter/DR15/Density_Temp_Files/Profile Test.csv'
+    profiles = '/Users/ballanr/Desktop/Research/DR15/Density_Temp_Files/Profile Test.csv'
     openprofile = pd.read_csv(profiles)
     cols = openprofile.columns
     headers = cols.tolist()
@@ -783,8 +783,8 @@ def Brackett_Decrement_Plot(plate,mjd,fiber):
     #serverpath = '/Volumes/CoveyData/APOGEE_Spectra/Richard/DR15/Spectra Files/Emitters/'
 
 #sets up reading the csv files in emitters folder
-    serverpath = '/Users/Table/Desktop/Research/Hunter/DR15/Emitters/'
-    #serverpath = '/Users/ballanr/Desktop/Research/DR15/Spectra Files/Emitters/'
+    #serverpath = '/Users/Table/Desktop/Research/Hunter/DR15/Emitters/'
+    serverpath = '/Users/ballanr/Desktop/Research/DR15/Spectra Files/Emitters/'
     filepath = serverpath + str(plate) + '-' + str(mjd) + '-' + str(fiber) + '.csv'
     openfile = pd.read_csv(filepath)
 
