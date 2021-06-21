@@ -7,4 +7,5 @@ dependencies:
   - numpy
   - pandas
   - scipy
+  - astropy
 prefix: /Users/coveyk/opt/anaconda3/envs/APOGEEaccretion
