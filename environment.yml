@@ -8,4 +8,8 @@ dependencies:
   - pandas
   - scipy
   - astropy
+  - matplotlib
+  - seaborn
 prefix: /Users/coveyk/opt/anaconda3/envs/APOGEEaccretion
+
+#also add pyAstronomy via pip install.
