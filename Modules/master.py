@@ -599,8 +599,8 @@ def Decrement_Model(equivs,equiverr):
 
     # Reading in the density and temperature models
 
-    modelpath = '/Users/coveyk/Dropbox/python/T-Tauri/Summer_2021/dataFiles/DR15/Density_Temp_Files/Profile Test.csv'        #path for Kevin C.
-    #modelpath = '/Users/Table/Desktop/Research/Hunter/DR15/Density_Temp_Files/Profile Test.csv'       #path for Hunter C.
+    #modelpath = '/Users/coveyk/Dropbox/python/T-Tauri/Summer_2021/dataFiles/DR15/Density_Temp_Files/Profile Test.csv'        #path for Kevin C.
+    modelpath = '/Users/Table/Desktop/Research/Hunter/DR15/Density_Temp_Files/Profile Test.csv'       #path for Hunter C.
     #modelpath = '/Users/ballanr/Desktop/Research/DR15/Density_Temp_Files/Profile Test.csv'            #path for Richard B.
     openmodel = pd.read_csv(modelpath)
     cols = openmodel.columns
@@ -618,10 +618,10 @@ def Decrement_Model(equivs,equiverr):
     
 #Calculates Chi squared for each column
 #I changed this from the original code to read only the probabilities in the Profile Test csv
-    for j in range(len(cols)-2):   #<---- Hmmm again...  I think this is doing odd things....
+    for i in range(len(cols)):   #<---- Hmmm again...  I think this is doing odd things....
 
         chi_squared = 0
-        i=j+2   #<---- Hmmmm.....    
+           #<---- Hmmmm.....    
         probs = openmodel[cols[i]]
        
 
@@ -649,10 +649,10 @@ def Decrement_Model(equivs,equiverr):
 #                                             when we are working on it ourselves)
 #which headers start with 1?  <--- I think this might be a way of making the code manage adding different amounts of info if there is a leading 1 before a decimal point?
 #one way of debugging this could be to print headers[i] to remind ourselves what is happening....
-        print(headers[i])
+        #print(headers[i])
         #and now print the subset to understand what is going on.
-        print(headers[i][0:4], headers[i][5:])
-        print(headers[i][0:3], headers[i][4:])
+        #print(headers[i][0:4], headers[i][5:])
+        #print(headers[i][0:3], headers[i][4:])
         #huh -- I actually wonder if these lines are both wrong?!?!  I think the second line is better off as 3 and 5, to leave out the \ !!
         if headers[i].startswith('1'):
             Chi.append((headers[i][0:4],headers[i][5:],chi_squared))
@@ -663,17 +663,17 @@ def Decrement_Model(equivs,equiverr):
 
 #I also don't understand what's happening here  <--- yeah, this is a good example of why descriptive variable names help a lot... what are x, a, b and c?
 #my way of trying to solve this is to print Chi and x
-    print('Chi = ', Chi)
+    #print('Chi = ', Chi)
     x = min(c for (a,b,c) in Chi)
-    print('x = ', x)
+    #print('x = ', x)
 
     #going a level deeper, it seemed like the minimum chi square value (which is what x is) is NOT being associated with the correct model.
     #this led me to the indexing change above (the j = len(cols)-2 and i = j+2 thing above).   
     for index, item in enumerate(Chi):
-        print(index, item)
+        #print(index, item)
         if item[2] == x:
             index1 = headers[index]
-            print(headers[index], index1, x, item[2])
+            #print(headers[index], index1, x, item[2])
     return(index1,x)
 
 def oswalk():
@@ -783,9 +783,9 @@ def Brackett_Decrement_Plot(plate,mjd,fiber, savePlot = "True"):
     import numpy as np
 
     # Importing Kwan and Fischer models -- label each path with an in-line comment
-    #profiles = '/Users/Table/Desktop/Research/Hunter/DR15/Density_Temp_Files/Profile Test.csv'    #path for Hunter C.
+    profiles = '/Users/Table/Desktop/Research/Hunter/DR15/Density_Temp_Files/Profile Test.csv'    #path for Hunter C.
     #profiles = '/Users/ballanr/Desktop/Research/DR15/Density_Temp_Files/Profile Test.csv'         #path for Richard B.
-    profiles = '/Users/coveyk/Dropbox/python/T-Tauri/Summer_2021/dataFiles/DR15/Density_Temp_Files/Profile Test.csv'   #path for Kevin C.
+    #profiles = '/Users/coveyk/Dropbox/python/T-Tauri/Summer_2021/dataFiles/DR15/Density_Temp_Files/Profile Test.csv'   #path for Kevin C.
     
     openprofile = pd.read_csv(profiles)
     cols = openprofile.columns
@@ -806,9 +806,9 @@ def Brackett_Decrement_Plot(plate,mjd,fiber, savePlot = "True"):
     #serverpath = '/Volumes/CoveyData/APOGEE_Spectra/Richard/DR15/Spectra Files/Emitters/'
 
 #sets up reading the csv files in emitters folder
-    #serverpath = '/Users/Table/Desktop/Research/Hunter/DR15/Emitters/'                      #path for Hunter C.
+    serverpath = '/Users/Table/Desktop/Research/Hunter/DR15/Emitters/'                      #path for Hunter C.
     #serverpath = '/Users/ballanr/Desktop/Research/DR15/Spectra Files/Emitters/'             #path for Richard B.
-    serverpath = '/Users/coveyk/Dropbox/python/T-Tauri/Summer_2021/dataFiles/DR15/Spectra Files/Emitters/'             #path for Kevin C.
+    #serverpath = '/Users/coveyk/Dropbox/python/T-Tauri/Summer_2021/dataFiles/DR15/Spectra Files/Emitters/'             #path for Kevin C.
     filepath = serverpath + str(plate) + '-' + str(mjd) + '-' + str(fiber) + '.csv'
     openfile = pd.read_csv(filepath)
 
@@ -818,6 +818,8 @@ def Brackett_Decrement_Plot(plate,mjd,fiber, savePlot = "True"):
     flux = openfile['Flux']
     error = openfile['Error']
     snr = openfile['SNR']
+    
+    
 
     ''' Calculating EqW and Errors '''
 
@@ -880,9 +882,9 @@ def Brackett_Decrement_Plot(plate,mjd,fiber, savePlot = "True"):
     #Save individual plots if savePlot is enabled (which is the default)
     if savePlot == 'True':
         ### save command for Hunter's system
-        #plt.savefig('/Users/Table/Desktop/Research/Hunter/DR15/Plots/KDE_StrongEmitters ' + str(plate) + '-' + str(mjd) + '-' + str(fiber)+ '.png',bbox_inches='tight',dpi=300)
+        plt.savefig('/Users/Table/Desktop/Research/Hunter/DR15/Plots/KDE_StrongEmitters ' + str(plate) + '-' + str(mjd) + '-' + str(fiber)+ '.png',bbox_inches='tight',dpi=300)
         ### save command for Kevin's System
-        plt.savefig('/Users/coveyk/Dropbox/python/T-Tauri/Summer_2021/Kevin/Plots/KDE_StrongEmitters/' + str(plate) + '-' + str(mjd) + '-' + str(fiber)+ '.png',bbox_inches='tight',dpi=300)
+        #plt.savefig('/Users/coveyk/Dropbox/python/T-Tauri/Summer_2021/Kevin/Plots/KDE_StrongEmitters/' + str(plate) + '-' + str(mjd) + '-' + str(fiber)+ '.png',bbox_inches='tight',dpi=300)
 
     ### else command that allows us to show plot in notebooks if savePlot is not set to True
     else:

@@ -8,4 +8,4 @@ Created on Mon Jun 21 15:35:14 2021
 
 from master import *
 
-Brackett_Decrement_Plot(8906,57412,117)
+Brackett_Decrement_Plot(8886,57411,3)
