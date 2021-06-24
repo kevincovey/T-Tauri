@@ -1,3 +1,21 @@
+def Localpath():
+    # makes it so you don't have to change filepaths every time you fetch the repo from GitHub
+    # NEEDS KEVIN'S, MARINA'S, AND ELLIOTT'S GITHUB PATHS 
+    import pathlib
+    
+    # compares master.py's filepath with it's filepath on each user's computer
+    if str(pathlib.Path(__file__).parent.absolute()) == 'C:\\Users\\Table\\Documents\\GitHub\\T-Tauri\\Modules':
+        
+        # opens localpath.txt on the user's computer
+        file = open("/Users/Table/Documents/GitHub/T-Tauri/localpath.txt","r")
+        
+        # reads the line specific to the user
+        path = file.readlines()[0]
+    #elif str(pathlib.Path(__file__).parent.absolute()) == 
+    
+    return path
+
+
 def Master_Catalog(full_list):
 
     import pandas as pd
@@ -591,9 +609,9 @@ def Equivalent_Width(wave,flux,errors,snr):
     return (equivs,equiverr)
 
 def Decrement_Model(equivs,equiverr):
+    # This function takes in the equivalent widths and errors,
+    # picks the best model from Profile Test.csv, and gives its chi squared value.
     
-#This function is already pretty commented but I'll add some more I guess
-
     import pandas as pd
     import numpy as np
 
@@ -617,24 +635,28 @@ def Decrement_Model(equivs,equiverr):
     # Calculations
     
 #Calculates Chi squared for each column
-#I changed this from the original code to read only the probabilities in the Profile Test csv
-    for i in range(len(cols)):   #<---- Hmmm again...  I think this is doing odd things....
+
+    for i in range(len(cols)):
 
         chi_squared = 0
-           #<---- Hmmmm.....    
+   
         probs = openmodel[cols[i]]
        
 
         for k in range(len(probs)):
             # Calculating numerator
-
+            #expressing equivalent widths as ratio of relative line strength
             
             ratio = equivs[k] / equivs[0]
+            #difference between ratio above and ratio from model
             numerator = ratio - (probs[k] / probs[0])
             numerator = numerator**2
 
             # Calculating denominator
             sigma = ratio * np.sqrt((equiverr[k] / equivs[k])**2 + (equiverr[0] / equivs[0])**2)
+            # The left and right sides of the below equation are probably 
+            # to create a minimum error, the left side scaling with the ratio
+            # and the right side being a flat .01
             denominator = (np.sqrt(0.02) * ratio)**2 + sigma**2 + (0.1**2)
             denominator = np.sqrt(denominator)
 
@@ -643,16 +665,8 @@ def Decrement_Model(equivs,equiverr):
 
         # Append information to Chi
 
-#not exactly sure what's happening here  <--- yes, this is a good reminder to OVERcomment code
-#                                            (since anyone else reading the code will have less background,
-#                                             so will need more explicit explanation than seems necessary 
-#                                             when we are working on it ourselves)
-#which headers start with 1?  <--- I think this might be a way of making the code manage adding different amounts of info if there is a leading 1 before a decimal point?
-#one way of debugging this could be to print headers[i] to remind ourselves what is happening....
-        #print(headers[i])
-        #and now print the subset to understand what is going on.
-        #print(headers[i][0:4], headers[i][5:])
-        #print(headers[i][0:3], headers[i][4:])
+
+
         #huh -- I actually wonder if these lines are both wrong?!?!  I think the second line is better off as 3 and 5, to leave out the \ !!
         if headers[i].startswith('1'):
             Chi.append((headers[i][0:4],headers[i][5:],chi_squared))
@@ -661,20 +675,19 @@ def Decrement_Model(equivs,equiverr):
             Chi.append((headers[i][0:3],headers[i][4:],chi_squared))
 
 
-#I also don't understand what's happening here  <--- yeah, this is a good example of why descriptive variable names help a lot... what are x, a, b and c?
-#my way of trying to solve this is to print Chi and x
-    #print('Chi = ', Chi)
-    x = min(c for (a,b,c) in Chi)
-    #print('x = ', x)
 
-    #going a level deeper, it seemed like the minimum chi square value (which is what x is) is NOT being associated with the correct model.
-    #this led me to the indexing change above (the j = len(cols)-2 and i = j+2 thing above).   
+
+    #finds smallest chisquare value in chi
+    BestChiSquare = min(ChiSquare for (Temperature,Density,ChiSquare) in Chi)
+
+
+
     for index, item in enumerate(Chi):
         #print(index, item)
-        if item[2] == x:
+        if item[2] == BestChiSquare:
             index1 = headers[index]
             #print(headers[index], index1, x, item[2])
-    return(index1,x)
+    return(index1,BestChiSquare)
 
 def oswalk():
 
@@ -783,7 +796,7 @@ def Brackett_Decrement_Plot(plate,mjd,fiber, savePlot = "True"):
     import numpy as np
 
     # Importing Kwan and Fischer models -- label each path with an in-line comment
-    profiles = '/Users/Table/Desktop/Research/Hunter/DR15/Density_Temp_Files/Profile Test.csv'    #path for Hunter C.
+    profiles = Localpath() + '/DR15/Density_Temp_Files/Profile Test.csv'    #path for Hunter C.
     #profiles = '/Users/ballanr/Desktop/Research/DR15/Density_Temp_Files/Profile Test.csv'         #path for Richard B.
     #profiles = '/Users/coveyk/Dropbox/python/T-Tauri/Summer_2021/dataFiles/DR15/Density_Temp_Files/Profile Test.csv'   #path for Kevin C.
     
@@ -806,7 +819,7 @@ def Brackett_Decrement_Plot(plate,mjd,fiber, savePlot = "True"):
     #serverpath = '/Volumes/CoveyData/APOGEE_Spectra/Richard/DR15/Spectra Files/Emitters/'
 
 #sets up reading the csv files in emitters folder
-    serverpath = '/Users/Table/Desktop/Research/Hunter/DR15/Emitters/'                      #path for Hunter C.
+    serverpath = '/Users/Table/Desktop/Research/Hunter/DR15/Spectra Files/Emitters/'                      #path for Hunter C.
     #serverpath = '/Users/ballanr/Desktop/Research/DR15/Spectra Files/Emitters/'             #path for Richard B.
     #serverpath = '/Users/coveyk/Dropbox/python/T-Tauri/Summer_2021/dataFiles/DR15/Spectra Files/Emitters/'             #path for Kevin C.
     filepath = serverpath + str(plate) + '-' + str(mjd) + '-' + str(fiber) + '.csv'
@@ -855,7 +868,7 @@ def Brackett_Decrement_Plot(plate,mjd,fiber, savePlot = "True"):
     ''' Plotting '''
 
 
-#I am currently figuring out how this works. 
+ 
     plt.figure(figsize=(13,10))
 
     #plt.errorbar(np.arange(11,21,1),equivs,errors,color='green',ecolor='red',capsize=5,label='Original')
@@ -882,7 +895,7 @@ def Brackett_Decrement_Plot(plate,mjd,fiber, savePlot = "True"):
     #Save individual plots if savePlot is enabled (which is the default)
     if savePlot == 'True':
         ### save command for Hunter's system
-        plt.savefig('/Users/Table/Desktop/Research/Hunter/DR15/Plots/KDE_StrongEmitters ' + str(plate) + '-' + str(mjd) + '-' + str(fiber)+ '.png',bbox_inches='tight',dpi=300)
+        plt.savefig('/Users/Table/Desktop/Research/Hunter/DR15/Plots/KDE_StrongEmitters/ ' + str(plate) + '-' + str(mjd) + '-' + str(fiber)+ '.png',bbox_inches='tight',dpi=300)
         ### save command for Kevin's System
         #plt.savefig('/Users/coveyk/Dropbox/python/T-Tauri/Summer_2021/Kevin/Plots/KDE_StrongEmitters/' + str(plate) + '-' + str(mjd) + '-' + str(fiber)+ '.png',bbox_inches='tight',dpi=300)
 
