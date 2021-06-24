@@ -909,7 +909,7 @@ def Brackett_Decrement_Plot(plate,mjd,fiber, savePlot = "True"):
     #Save individual plots if savePlot is enabled (which is the default)
     if savePlot == 'True':
         ### save command for Hunter's system
-        plt.savefig(Localpath() + '/DR15/Plots/KDE_StrongEmitters/ ' + str(plate) + '-' + str(mjd) + '-' + str(fiber)+ '.png',bbox_inches='tight',dpi=300)
+        plt.savefig(Localpath() + '/DR15/Plots/KDE_StrongEmitters/' + str(plate) + '-' + str(mjd) + '-' + str(fiber)+ '.png',bbox_inches='tight',dpi=300)
         ### save command for Kevin's System
         #plt.savefig('/Users/coveyk/Dropbox/python/T-Tauri/Summer_2021/Kevin/Plots/KDE_StrongEmitters/' + str(plate) + '-' + str(mjd) + '-' + str(fiber)+ '.png',bbox_inches='tight',dpi=300)
 
