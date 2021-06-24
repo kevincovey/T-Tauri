@@ -2,6 +2,8 @@ def Localpath():
     # makes it so you don't have to change filepaths every time you fetch the repo from GitHub
     # NEEDS KEVIN'S, MARINA'S, AND ELLIOTT'S GITHUB PATHS 
     import pathlib
+
+    print(str(pathlib.Path(__file__).parent.absolute()))
     
     # compares master.py's filepath with it's filepath on each user's computer
     if str(pathlib.Path(__file__).parent.absolute()) == 'C:\\Users\\Table\\Documents\\GitHub\\T-Tauri\\Modules':
@@ -11,8 +13,15 @@ def Localpath():
         
         # reads the line specific to the user
         path = file.readlines()[0]
-    #elif str(pathlib.Path(__file__).parent.absolute()) == 
-    
+
+    elif str(pathlib.Path(__file__).parent.absolute()) == '/Users/coveyk/Dropbox/python/T-Tauri/Modules':
+        
+        # opens localpath.txt on the user's computer
+        file = open("/Users/coveyk/Dropbox/python/T-Tauri/localpath.txt","r")
+
+        # reads the line specific to the user
+        path = file.readlines()[1]
+        
     return path
 
 
