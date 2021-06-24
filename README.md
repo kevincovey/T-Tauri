@@ -9,4 +9,4 @@ dependencies helps with keeping the environment compatible across
 plateforms -- is available in this repo as an
 [environment.yml](https://github.com/kevincovey/T-Tauri/blob/master/environment.yml) file.
 
-This edit is also designed to conflict.
+this edit is designed to conflict.
