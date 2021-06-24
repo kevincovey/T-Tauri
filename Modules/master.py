@@ -620,6 +620,7 @@ def Decrement_Model(equivs,equiverr):
     #modelpath = '/Users/coveyk/Dropbox/python/T-Tauri/Summer_2021/dataFiles/DR15/Density_Temp_Files/Profile Test.csv'        #path for Kevin C.
     modelpath = '/Users/Table/Desktop/Research/Hunter/DR15/Density_Temp_Files/Profile Test.csv'       #path for Hunter C.
     #modelpath = '/Users/ballanr/Desktop/Research/DR15/Density_Temp_Files/Profile Test.csv'            #path for Richard B.
+    #modelpath = base + 'DR15/Density_Temp_Files/Profile Test.csv'
     openmodel = pd.read_csv(modelpath)
     cols = openmodel.columns
     
