@@ -3,7 +3,7 @@ def Localpath():
     # NEEDS KEVIN'S, MARINA'S, AND ELLIOTT'S GITHUB PATHS 
     import pathlib
 
-    print(str(pathlib.Path(__file__).parent.absolute()))
+
     
     # compares master.py's filepath with it's filepath on each user's computer
     if str(pathlib.Path(__file__).parent.absolute()) == 'C:\\Users\\Table\\Documents\\GitHub\\T-Tauri\\Modules':
@@ -13,6 +13,7 @@ def Localpath():
         
         # reads the line specific to the user
         path = file.readlines()[0]
+        
 
     elif str(pathlib.Path(__file__).parent.absolute()) == '/Users/coveyk/Dropbox/python/T-Tauri/Modules':
         
@@ -21,6 +22,9 @@ def Localpath():
 
         # reads the line specific to the user
         path = file.readlines()[1]
+        
+    
+    path = path.rstrip("\n")
         
     return path
 
@@ -627,7 +631,7 @@ def Decrement_Model(equivs,equiverr):
     # Reading in the density and temperature models
 
     #modelpath = '/Users/coveyk/Dropbox/python/T-Tauri/Summer_2021/dataFiles/DR15/Density_Temp_Files/Profile Test.csv'        #path for Kevin C.
-    modelpath = '/Users/Table/Desktop/Research/Hunter/DR15/Density_Temp_Files/Profile Test.csv'       #path for Hunter C.
+    modelpath = Localpath() + '/DR15/Density_Temp_Files/Profile Test.csv'       #path for Hunter C.
     #modelpath = '/Users/ballanr/Desktop/Research/DR15/Density_Temp_Files/Profile Test.csv'            #path for Richard B.
     #modelpath = base + 'DR15/Density_Temp_Files/Profile Test.csv'
     openmodel = pd.read_csv(modelpath)
@@ -829,7 +833,7 @@ def Brackett_Decrement_Plot(plate,mjd,fiber, savePlot = "True"):
     #serverpath = '/Volumes/CoveyData/APOGEE_Spectra/Richard/DR15/Spectra Files/Emitters/'
 
 #sets up reading the csv files in emitters folder
-    serverpath = '/Users/Table/Desktop/Research/Hunter/DR15/Spectra Files/Emitters/'                      #path for Hunter C.
+    serverpath = Localpath() + '/DR15/Spectra Files/Emitters/'                      #path for Hunter C.
     #serverpath = '/Users/ballanr/Desktop/Research/DR15/Spectra Files/Emitters/'             #path for Richard B.
     #serverpath = '/Users/coveyk/Dropbox/python/T-Tauri/Summer_2021/dataFiles/DR15/Spectra Files/Emitters/'             #path for Kevin C.
     filepath = serverpath + str(plate) + '-' + str(mjd) + '-' + str(fiber) + '.csv'
@@ -905,7 +909,7 @@ def Brackett_Decrement_Plot(plate,mjd,fiber, savePlot = "True"):
     #Save individual plots if savePlot is enabled (which is the default)
     if savePlot == 'True':
         ### save command for Hunter's system
-        plt.savefig('/Users/Table/Desktop/Research/Hunter/DR15/Plots/KDE_StrongEmitters/ ' + str(plate) + '-' + str(mjd) + '-' + str(fiber)+ '.png',bbox_inches='tight',dpi=300)
+        plt.savefig(Localpath() + '/DR15/Plots/KDE_StrongEmitters/ ' + str(plate) + '-' + str(mjd) + '-' + str(fiber)+ '.png',bbox_inches='tight',dpi=300)
         ### save command for Kevin's System
         #plt.savefig('/Users/coveyk/Dropbox/python/T-Tauri/Summer_2021/Kevin/Plots/KDE_StrongEmitters/' + str(plate) + '-' + str(mjd) + '-' + str(fiber)+ '.png',bbox_inches='tight',dpi=300)
 
