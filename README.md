@@ -8,3 +8,5 @@ Conda environment file with direct dependencies -- only listing direct
 dependencies helps with keeping the environment compatible across
 plateforms -- is available in this repo as an
 [environment.yml](https://github.com/kevincovey/T-Tauri/blob/master/environment.yml) file.
+
+this edit is designed to conflict.
