@@ -630,10 +630,8 @@ def Decrement_Model(equivs,equiverr):
 
     # Reading in the density and temperature models
 
-    #modelpath = '/Users/coveyk/Dropbox/python/T-Tauri/Summer_2021/dataFiles/DR15/Density_Temp_Files/Profile Test.csv'        #path for Kevin C.
-    modelpath = Localpath() + '/DR15/Density_Temp_Files/Profile Test.csv'       #path for Hunter C.
-    #modelpath = '/Users/ballanr/Desktop/Research/DR15/Density_Temp_Files/Profile Test.csv'            #path for Richard B.
-    #modelpath = base + 'DR15/Density_Temp_Files/Profile Test.csv'
+
+    modelpath = Localpath() + '/DR15/Density_Temp_Files/Profile Test.csv'       
     openmodel = pd.read_csv(modelpath)
     cols = openmodel.columns
     
@@ -693,6 +691,7 @@ def Decrement_Model(equivs,equiverr):
 
     #finds smallest chisquare value in chi
     BestChiSquare = min(ChiSquare for (Temperature,Density,ChiSquare) in Chi)
+    #print(BestChiSquare)
 
 
 
@@ -810,9 +809,7 @@ def Brackett_Decrement_Plot(plate,mjd,fiber, savePlot = "True"):
     import numpy as np
 
     # Importing Kwan and Fischer models -- label each path with an in-line comment
-    profiles = Localpath() + '/DR15/Density_Temp_Files/Profile Test.csv'    #path for Hunter C.
-    #profiles = '/Users/ballanr/Desktop/Research/DR15/Density_Temp_Files/Profile Test.csv'         #path for Richard B.
-    #profiles = '/Users/coveyk/Dropbox/python/T-Tauri/Summer_2021/dataFiles/DR15/Density_Temp_Files/Profile Test.csv'   #path for Kevin C.
+    profiles = Localpath() + '/DR15/Density_Temp_Files/Profile Test.csv' 
     
     openprofile = pd.read_csv(profiles)
     cols = openprofile.columns
@@ -833,9 +830,8 @@ def Brackett_Decrement_Plot(plate,mjd,fiber, savePlot = "True"):
     #serverpath = '/Volumes/CoveyData/APOGEE_Spectra/Richard/DR15/Spectra Files/Emitters/'
 
 #sets up reading the csv files in emitters folder
-    serverpath = Localpath() + '/DR15/Spectra Files/Emitters/'                      #path for Hunter C.
-    #serverpath = '/Users/ballanr/Desktop/Research/DR15/Spectra Files/Emitters/'             #path for Richard B.
-    #serverpath = '/Users/coveyk/Dropbox/python/T-Tauri/Summer_2021/dataFiles/DR15/Spectra Files/Emitters/'             #path for Kevin C.
+    serverpath = Localpath() + '/DR15/Spectra Files/Emitters/'    
+ 
     filepath = serverpath + str(plate) + '-' + str(mjd) + '-' + str(fiber) + '.csv'
     openfile = pd.read_csv(filepath)
 
@@ -908,18 +904,14 @@ def Brackett_Decrement_Plot(plate,mjd,fiber, savePlot = "True"):
     
     #Save individual plots if savePlot is enabled (which is the default)
     if savePlot == 'True':
-        ### save command for Hunter's system
+
         plt.savefig(Localpath() + '/DR15/Plots/KDE_StrongEmitters/' + str(plate) + '-' + str(mjd) + '-' + str(fiber)+ '.png',bbox_inches='tight',dpi=300)
-        ### save command for Kevin's System
-        #plt.savefig('/Users/coveyk/Dropbox/python/T-Tauri/Summer_2021/Kevin/Plots/KDE_StrongEmitters/' + str(plate) + '-' + str(mjd) + '-' + str(fiber)+ '.png',bbox_inches='tight',dpi=300)
 
     ### else command that allows us to show plot in notebooks if savePlot is not set to True
     else:
         plt.show()
         
-    #plt.savefig('/Users/Table/Desktop/Research/Hunter/DR15/Plots/KDE_StrongEmitters ' + str(plate) + '-' + str(mjd) + '-' + str(fiber)+ '.png',bbox_inches='tight',dpi=300)
-    #plt.savefig('/Users/ballanr/Desktop/testprofile.png',bbox_inches='tight',dpi=300)
-    
+
     ##### Save to server
     #plt.savefig('/Volumes/CoveyData/APOGEE_Spectra/Richard/DR15/Plots/Decrements/' + savestring,bbox_inches='tight',dpi=300)
 
