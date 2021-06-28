@@ -276,13 +276,15 @@ def File_Creator(plate,mjd,fiber,version):
     df = df.iloc[0:0]
 
 def Fits_Info(plate,mjd,fiber,version):
-
+#not sure what "version" is?
     from astropy.io import fits
     from PyAstronomy.pyasl import helcorr
 
     # Now we stitch together the server path to each file. Careful though as there is a folder for the APO telescope and one for LCO that   
     # contain different field. So we will check against LCO as it contains fewer plates
 
+#lco only has these 7 plates
+#confused because I couldn't find any of these plates in apo25m... is the purpose for them to NOT have overlapping data?
     lco = [9753,9761,9762,9856,9906,9907,9908]
     apopath = '/Volumes/CoveyData/APOGEE_Spectra/preDR15/apogee/spectro/redux/visits/apo25m/'
     lcopath = '/Volumes/CoveyData/APOGEE_Spectra/preDR15/apogee/spectro/redux/visits/lco25m/'
@@ -305,6 +307,7 @@ def Fits_Info(plate,mjd,fiber,version):
     ''' Get: wavegrid, flux, error, VHELIO, RA, DEC, TELESCOP '''
 
     # Grabbing the data for the wavelength and flux
+#what are these numbers 4,2,1?
     wavedata = fitsfile[4].data
     fluxdata = fitsfile[1].data
     ferrordata = fitsfile[2].data
@@ -316,9 +319,11 @@ def Fits_Info(plate,mjd,fiber,version):
     telescope = header['TELESCOP']
 
     # Sometimes there is no reported BC so we need to get one from the helcorr package
+#is this BC as in barycentric correction? -EK
     try:
         vbc = header['BC']
 
+#again what are these numbers
     except:
         if telescope == 'apo25m':
             vbc,hjd = helcorr(-105.4913,36.4649,2788,ra,dec,jd)
@@ -1153,4 +1158,5 @@ def Scholars_Week_Plots(plot):
 
 #     print(plate,mjd,fiber,len(row[0]))
 #     File_Creator(plate,mjd,fiber,'apogee2')
+
 
