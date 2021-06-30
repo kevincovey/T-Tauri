@@ -1,3 +1,205 @@
+<<<<<<< Updated upstream
+=======
+def Localpath():
+    # makes it so you don't have to change filepaths every time you fetch the repo from GitHub
+    # NEEDS KEVIN'S, MARINA'S, AND ELLIOTT'S GITHUB PATHS 
+    import pathlib
+
+
+    
+    # compares master.py's filepath with its filepath on each user's computer
+    if str(pathlib.Path(__file__).parent.absolute()) == 'C:\\Users\\Table\\Documents\\GitHub\\T-Tauri\\Modules':
+        
+        # opens localpath.txt on the user's computer
+        file = open("/Users/Table/Documents/GitHub/T-Tauri/localpath.txt","r")
+        
+        # reads the line in localpath.txt specific to the user to concatenate with common path
+        path = file.readlines()[0]
+        
+
+    elif str(pathlib.Path(__file__).parent.absolute()) == '/Users/coveyk/Dropbox/python/T-Tauri/Modules':
+        
+        # opens localpath.txt on the user's computer
+        file = open("/Users/coveyk/Dropbox/python/T-Tauri/localpath.txt","r")
+
+        # reads the line specific to the user
+        path = file.readlines()[1]
+        
+    
+    path = path.rstrip("\n")
+        
+    return path
+
+def Emitters_Model_csv():
+    
+    import os
+    import numpy as np
+    import pandas as pd
+    
+    
+    
+    list_of_emitters = os.listdir(Localpath() + '/DR15/Spectra Files/Emitters')
+    
+    
+    #Initializes lists to use for csv creation
+    plate=[]
+    mjd=[]
+    fiber=[]
+    dens=[]
+    temp=[]
+    ChiSquareList=[]
+    
+    #creates lists of all the plates, mjds, and fibers from Emitters
+    for i in range(len(list_of_emitters)):
+        plate.append(list_of_emitters[i][0:4])
+        #print(plate)
+        
+        mjd.append(list_of_emitters[i][5:10])
+        #print(mjd)
+        
+        fiber.append(list_of_emitters[i][11:14])
+        #print(fiber)
+        
+        #Brackett_Decrement_Plot(plate,mjd,fiber)
+        #print(plate,mjd,fiber)
+        
+        
+        
+        #print(i, 'out of', str(len(list_of_emitters))+':',plate[i],'-',mjd[i],'-',fiber[i])
+        #Brackett_Decrement_Plot(plate[i],mjd[i],fiber[i])
+
+        
+        ###################################################
+        #This part is copy-pasted from Brackett_Decrement Model
+        serverpath = Localpath() + '/DR15/Spectra Files/Emitters/'    
+   
+        filepath = serverpath + str(plate[i]) + '-' + str(mjd[i]) + '-' + str(fiber[i]) + '.csv'
+        openfile = pd.read_csv(filepath)
+        
+
+
+        
+
+        wave = openfile['Wavelength'] 
+        flux = openfile['Flux']
+        error = openfile['Error']
+        snr = openfile['SNR']
+    
+    
+
+        #finds wavelengths, fluxes, errors, snrs for each emitter
+        #for use in decrement_model
+        equivs, errors = Equivalent_Width(wave,flux,error,snr)
+        
+        equivs = np.asarray(equivs)
+        errors = np.asarray(errors)
+
+
+    
+
+        index, BestChiSquare = Decrement_Model(equivs,errors)
+        
+        #Minor Changes to this to put dens and temp into a list for csv
+        if index.startswith('1'):
+            dens.append(index[0:4])
+            temp.append(index[5:])
+        else:
+            dens.append(index[0:3])
+            temp.append(index[4:])
+            
+        ChiSquareList.append(BestChiSquare)
+            
+
+            
+       ####################################################     
+       
+       
+    #Makes the Emitters_Comparison csv
+    cols = ['Plate','MJD','Fiber','Density','Temp','Chi Squared']
+    df = pd.DataFrame(columns = cols)
+    
+    df['Plate'] = plate
+    df['MJD'] = mjd
+    df['Fiber'] = fiber
+    df['Density'] = dens
+    df['Temp'] = temp
+    df['Chi Squared'] = ChiSquareList
+    
+    df.to_csv( Localpath() + '/DR15/Spectra Files/Emitters_Comparison.csv', index=False)
+       
+
+def Model_Comparison():
+    
+    import pandas as pd
+    import numpy as np
+    
+    # Sets up each column of Emitters_Comparison as a list
+    Emitters_Compare_Path = Localpath() + '/DR15/Spectra Files/Emitters_Comparison.csv'
+    Emitters_Comparison = pd.read_csv(Emitters_Compare_Path)
+    
+    Comp_plate = Emitters_Comparison['Plate'].tolist()
+    Comp_mjd = Emitters_Comparison['MJD'].tolist()
+    Comp_fiber = Emitters_Comparison['Fiber'].tolist()
+    Comp_dens = Emitters_Comparison['Density'].tolist()
+    Comp_temp = Emitters_Comparison['Temp'].tolist()
+    Comp_chisquare = Emitters_Comparison['Chi Squared'].tolist()
+
+
+    # Sets up each column of Emitters_List_DR15 that I care about as a list
+    Emitters_List_Path = Localpath() + '/DR15/Emitters_List_DR15.csv'
+    Emitters_List = pd.read_csv(Emitters_List_Path)
+    
+    Emit_plate = Emitters_List['Plate'].tolist()
+    Emit_mjd = Emitters_List['MJD'].tolist()
+    Emit_fiber = Emitters_List['Fiber'].tolist()
+    Emit_dens = Emitters_List['Density'].tolist()
+    Emit_temp = Emitters_List['Temp'].tolist()
+    Emit_chisquare = Emitters_List['Chi'].tolist()
+    
+    
+    # Compares both lists to find the same plate, mjd, fiber in both 
+    for i in range(len(Comp_plate)):
+        for j in range(len(Comp_plate)):
+            if (Comp_plate[i] == Emit_plate[j]) and (Comp_mjd[i] == Emit_mjd[j]) and Comp_fiber[i] == Emit_fiber[j]:
+                
+                #print('comp_plate: ', Comp_plate[i], '\n emit_plate: ', Emit_plate[j])
+                #print('comp_mjd: ', Comp_mjd[i], '\n emit_mjd: ', Emit_mjd[j])
+                #print('comp_fiber: ', Comp_fiber[i], '\n emit_fiber: ', Emit_fiber[j], '\n')
+                
+                
+                # Checks whether all the densities, temps, and chis are equal
+                # If one of those isn't equal, it tells me which and what values they have
+                
+                if (Comp_dens[i] == Emit_dens[j]) and (Comp_temp[i] == Emit_temp[j]): #and (Comp_chisquare[i] == Emit_chisquare[j]):
+                    print(str(Comp_plate[i]) + '-' + str(Comp_mjd[i]) + '-' + str(Comp_fiber[i]) + ': ')
+                    print('All Equal! \n')
+                    
+                elif Comp_dens[i] != Emit_dens[j]:
+                    print(str(Comp_plate[i]) + '-' + str(Comp_mjd[i]) + '-' + str(Comp_fiber[i]) + ': ')
+                    print('Comparison Density: ', Comp_dens[i], '\n Emitter Density: ', Emit_dens[j], '\n')
+                
+                elif Comp_temp[i] != Emit_temp[j]:
+                    print(str(Comp_plate[i]) + '-' + str(Comp_mjd[i]) + '-' + str(Comp_fiber[i]) + ': ')
+                    print('Comparison Temp: ', Comp_temp[i], '\n Emitter Temp: ', Emit_temp[j], '\n')
+                
+                # elif Comp_chisquare[i] != Emit_chisquare[j]:
+                #     print(str(Comp_plate[i]) + '-' + str(Comp_mjd[i]) + '-' + str(Comp_fiber[i]) + ': ')
+                #     print('Comparison Chi Square: ', Comp_chisquare[i], '\n Emitter Chi Square: ', Emit_chisquare[j], '\n')
+                
+        
+                    
+                    
+                    
+                
+         
+    
+    
+    
+    
+    return
+
+
+>>>>>>> Stashed changes
 def Master_Catalog(full_list):
 
     import pandas as pd
@@ -613,6 +815,11 @@ def Decrement_Model(equivs,equiverr):
         chi_squared = 0
 
         probs = openmodel[cols[i]]
+<<<<<<< Updated upstream
+=======
+        
+       
+>>>>>>> Stashed changes
 
         for k in range(len(probs)):
             # Calculating numerator
@@ -622,11 +829,21 @@ def Decrement_Model(equivs,equiverr):
 
             # Calculating denominator
             sigma = ratio * np.sqrt((equiverr[k] / equivs[k])**2 + (equiverr[0] / equivs[0])**2)
+<<<<<<< Updated upstream
             denominator = (np.sqrt(0.02) * ratio)**2 + sigma**2 + (0.1**2)
+=======
+            # The left and right sides of the below equation are probably 
+            # to create a minimum error, the left side scaling with the ratio
+            # and the right side being a flat .01
+            denominator = sigma**2
+            #denominator = (np.sqrt(0.02) * ratio)**2 + sigma**2 + (0.1**2)
+
+>>>>>>> Stashed changes
             denominator = np.sqrt(denominator)
 
             # Adding to Chi
             chi_squared += numerator / denominator
+            #print (chi_squared)
 
         # Append information to Chi
         if headers[i].startswith('1'):
@@ -634,14 +851,34 @@ def Decrement_Model(equivs,equiverr):
         
         else:
             Chi.append((headers[i][0:3],headers[i][4:],chi_squared))
+            
+        
 
+<<<<<<< Updated upstream
     x = min(c for (a,b,c) in Chi)
+=======
+
+
+
+    #finds smallest chisquare value in chi
+    BestChiSquare = min(ChiSquare for (Temperature,Density,ChiSquare) in Chi)
+
+    #print(BestChiSquare)
+
+
+>>>>>>> Stashed changes
 
     for index, item in enumerate(Chi):
         if item[2] == x:
             index1 = headers[index]
+<<<<<<< Updated upstream
 
     return(index1,x)
+=======
+    #print(index1,BestChiSquare)
+            
+    return(index1,BestChiSquare)
+>>>>>>> Stashed changes
 
 def oswalk():
 
@@ -741,7 +978,11 @@ def KDE_Plot(filepath):
     ##### Save to server
     #plt.savefig('/Volumes/CoveyData/APOGEE_Spectra/Richard/DR15/Plots/KDE_Emitters.pdf',bbox_inches='tight',dpi=300)
 
+<<<<<<< Updated upstream
 def Brackett_Decrement_Plot(plate,mjd,fiber):
+=======
+def Brackett_Decrement_Plot(plate,mjd,fiber, savePlot = "False"):
+>>>>>>> Stashed changes
 
     import pandas as pd
     import matplotlib.pyplot as plt
@@ -764,11 +1005,24 @@ def Brackett_Decrement_Plot(plate,mjd,fiber):
         fiber = str(fiber)
 
     #serverpath = '/Volumes/CoveyData/APOGEE_Spectra/Richard/DR15/Spectra Files/Emitters/'
+<<<<<<< Updated upstream
     serverpath = '/Users/ballanr/Desktop/Research/DR15/Spectra Files/Emitters/'
     filepath = serverpath + str(plate) + '-' + str(mjd) + '-' + str(fiber) + '.csv'
     openfile = pd.read_csv(filepath)
 
     wave = openfile['Wavelength']
+=======
+
+#sets up reading the csv files in emitters folder
+    serverpath = Localpath() + '/DR15/Spectra Files/Emitters/'    
+   
+    filepath = serverpath + str(plate) + '-' + str(mjd) + '-' + str(fiber) + '.csv'
+    openfile = pd.read_csv(filepath)
+
+#I'm not exactly sure how this works, I don't know how pandas works
+#I'm assuming this is making individual lists for each variable?
+    wave = openfile['Wavelength'] 
+>>>>>>> Stashed changes
     flux = openfile['Flux']
     error = openfile['Error']
     snr = openfile['SNR']
@@ -781,7 +1035,14 @@ def Brackett_Decrement_Plot(plate,mjd,fiber):
     errors = np.asarray(errors)
 
     ''' Chi Squared and Best Fit Model '''
+<<<<<<< Updated upstream
     index, x = Decrement_Model(equivs,errors)
+=======
+    
+
+    index, BestChiSquare = Decrement_Model(equivs,errors)
+    
+>>>>>>> Stashed changes
 
     if index.startswith('1'):
         dens,temp = index[0:4],index[5:]
@@ -790,10 +1051,13 @@ def Brackett_Decrement_Plot(plate,mjd,fiber):
     
     normalized_model = openprofile[index]
     normalized_model = normalized_model/normalized_model[0]
+    
+    #print('density: '+ dens,'temp: ' +  temp, 'Chi Squared: '+ str(BestChiSquare))
 
     ##### Normalizing eqws and errors by Br 11
     equivs_scaled = equivs / equivs[0]
     errors_scaled = []
+    
 
     for i in range(len(equivs_scaled)):
 
@@ -802,13 +1066,24 @@ def Brackett_Decrement_Plot(plate,mjd,fiber):
 
     ''' Plotting '''
 
+<<<<<<< Updated upstream
+=======
+    
+ 
+>>>>>>> Stashed changes
     plt.figure(figsize=(13,10))
 
     #plt.errorbar(np.arange(11,21,1),equivs,errors,color='green',ecolor='red',capsize=5,label='Original')
     plt.scatter(np.arange(11,21,1),equivs_scaled,s=25,label='_nolegend_')
     plt.scatter(np.arange(11,21,1),normalized_model,color='black',s=25,zorder=1,label='_nolegend_')
     plt.errorbar(np.arange(11,21,1),equivs_scaled,errors_scaled,fmt='-',ecolor='red',capsize=5,label='Normalized',zorder=0)
-    plt.plot(np.arange(11,21,1),normalized_model,color='black',label=index)
+    plt.plot(np.arange(11,21,1),normalized_model,color='black',label='Best Fit: ' + index)
+    #plt.scatter(np.arange(11,21,1),np.arange(0,1,0.1),color='white',label="Chi Squared: " + str(round(BestChiSquare,4)))
+    plt.title(str(plate) + '-' + str(mjd) + '-' + str(fiber)  + ': Chi Squared = ' + str(round(BestChiSquare,4)), fontsize=20)
+
+    
+
+    
     
 
     plt.ylabel(r'Flux$_{n}$ / Flux$_{11}$',fontsize=20)
