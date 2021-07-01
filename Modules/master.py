@@ -1,5 +1,4 @@
-<<<<<<< Updated upstream
-=======
+
 def Localpath():
     # makes it so you don't have to change filepaths every time you fetch the repo from GitHub
     # NEEDS KEVIN'S, MARINA'S, AND ELLIOTT'S GITHUB PATHS 
@@ -190,16 +189,13 @@ def Model_Comparison():
                     
                     
                     
-                
-         
-    
     
     
     
     return
 
 
->>>>>>> Stashed changes
+
 def Master_Catalog(full_list):
 
     import pandas as pd
@@ -798,7 +794,7 @@ def Decrement_Model(equivs,equiverr):
     import numpy as np
 
     # Reading in the density and temperature models
-    modelpath = '/Users/ballanr/Desktop/Research/DR15/Density_Temp_Files/Profile Test.csv'
+    modelpath = Localpath() + '/DR15/Density_Temp_Files/Profile Test.csv'
     openmodel = pd.read_csv(modelpath)
     cols = openmodel.columns
     headers = cols.tolist()
@@ -815,11 +811,10 @@ def Decrement_Model(equivs,equiverr):
         chi_squared = 0
 
         probs = openmodel[cols[i]]
-<<<<<<< Updated upstream
-=======
+
         
        
->>>>>>> Stashed changes
+
 
         for k in range(len(probs)):
             # Calculating numerator
@@ -829,16 +824,16 @@ def Decrement_Model(equivs,equiverr):
 
             # Calculating denominator
             sigma = ratio * np.sqrt((equiverr[k] / equivs[k])**2 + (equiverr[0] / equivs[0])**2)
-<<<<<<< Updated upstream
-            denominator = (np.sqrt(0.02) * ratio)**2 + sigma**2 + (0.1**2)
-=======
+
+
+
             # The left and right sides of the below equation are probably 
             # to create a minimum error, the left side scaling with the ratio
             # and the right side being a flat .01
-            denominator = sigma**2
-            #denominator = (np.sqrt(0.02) * ratio)**2 + sigma**2 + (0.1**2)
+            #denominator = sigma**2
+            denominator = (np.sqrt(0.02) * ratio)**2 + sigma**2 + (0.1**2)
 
->>>>>>> Stashed changes
+
             denominator = np.sqrt(denominator)
 
             # Adding to Chi
@@ -854,9 +849,7 @@ def Decrement_Model(equivs,equiverr):
             
         
 
-<<<<<<< Updated upstream
-    x = min(c for (a,b,c) in Chi)
-=======
+
 
 
 
@@ -866,19 +859,16 @@ def Decrement_Model(equivs,equiverr):
     #print(BestChiSquare)
 
 
->>>>>>> Stashed changes
+
 
     for index, item in enumerate(Chi):
-        if item[2] == x:
+        if item[2] == BestChiSquare:
             index1 = headers[index]
-<<<<<<< Updated upstream
 
-    return(index1,x)
-=======
     #print(index1,BestChiSquare)
             
     return(index1,BestChiSquare)
->>>>>>> Stashed changes
+
 
 def oswalk():
 
@@ -978,18 +968,16 @@ def KDE_Plot(filepath):
     ##### Save to server
     #plt.savefig('/Volumes/CoveyData/APOGEE_Spectra/Richard/DR15/Plots/KDE_Emitters.pdf',bbox_inches='tight',dpi=300)
 
-<<<<<<< Updated upstream
-def Brackett_Decrement_Plot(plate,mjd,fiber):
-=======
+
 def Brackett_Decrement_Plot(plate,mjd,fiber, savePlot = "False"):
->>>>>>> Stashed changes
+
 
     import pandas as pd
     import matplotlib.pyplot as plt
     import numpy as np
 
     # Importing Kwan and Fischer models
-    profiles = '/Users/ballanr/Desktop/Research/DR15/Density_Temp_Files/Profile Test.csv'
+    profiles = Localpath() + '/DR15/Density_Temp_Files/Profile Test.csv'
     openprofile = pd.read_csv(profiles)
     cols = openprofile.columns
     headers = cols.tolist()
@@ -1004,14 +992,7 @@ def Brackett_Decrement_Plot(plate,mjd,fiber, savePlot = "False"):
     else:
         fiber = str(fiber)
 
-    #serverpath = '/Volumes/CoveyData/APOGEE_Spectra/Richard/DR15/Spectra Files/Emitters/'
-<<<<<<< Updated upstream
-    serverpath = '/Users/ballanr/Desktop/Research/DR15/Spectra Files/Emitters/'
-    filepath = serverpath + str(plate) + '-' + str(mjd) + '-' + str(fiber) + '.csv'
-    openfile = pd.read_csv(filepath)
 
-    wave = openfile['Wavelength']
-=======
 
 #sets up reading the csv files in emitters folder
     serverpath = Localpath() + '/DR15/Spectra Files/Emitters/'    
@@ -1022,7 +1003,7 @@ def Brackett_Decrement_Plot(plate,mjd,fiber, savePlot = "False"):
 #I'm not exactly sure how this works, I don't know how pandas works
 #I'm assuming this is making individual lists for each variable?
     wave = openfile['Wavelength'] 
->>>>>>> Stashed changes
+
     flux = openfile['Flux']
     error = openfile['Error']
     snr = openfile['SNR']
@@ -1035,14 +1016,12 @@ def Brackett_Decrement_Plot(plate,mjd,fiber, savePlot = "False"):
     errors = np.asarray(errors)
 
     ''' Chi Squared and Best Fit Model '''
-<<<<<<< Updated upstream
-    index, x = Decrement_Model(equivs,errors)
-=======
+
     
 
     index, BestChiSquare = Decrement_Model(equivs,errors)
     
->>>>>>> Stashed changes
+
 
     if index.startswith('1'):
         dens,temp = index[0:4],index[5:]
@@ -1066,11 +1045,7 @@ def Brackett_Decrement_Plot(plate,mjd,fiber, savePlot = "False"):
 
     ''' Plotting '''
 
-<<<<<<< Updated upstream
-=======
-    
- 
->>>>>>> Stashed changes
+
     plt.figure(figsize=(13,10))
 
     #plt.errorbar(np.arange(11,21,1),equivs,errors,color='green',ecolor='red',capsize=5,label='Original')
@@ -1095,11 +1070,20 @@ def Brackett_Decrement_Plot(plate,mjd,fiber, savePlot = "False"):
 
     ''' Output '''
 
-    savestring = str(plate) + '-' + str(mjd) + '-' + str(fiber) + '.pdf'
+    #savestring = str(plate) + '-' + str(mjd) + '-' + str(fiber) + '.pdf'
 
-    ##### Save to local
-    #plt.savefig('/Users/ballanr/Desktop/Research/DR15/Plots/Decrements/' + savestring,bbox_inches='tight',dpi=300)
-    plt.savefig('/Users/ballanr/Desktop/testprofile.png',bbox_inches='tight',dpi=300)
+ 
+    if savePlot == 'True':
+
+        plt.savefig(Localpath() + '/DR15/Plots/KDE_StrongEmitters/' + str(plate) + '-' + str(mjd) + '-' + str(fiber)+ '.png',bbox_inches='tight',dpi=300)
+
+    ### else command that allows us to show plot in notebooks if savePlot is not set to True
+    else:
+        plt.show()
+    
+
+
+   
     
     ##### Save to server
     #plt.savefig('/Volumes/CoveyData/APOGEE_Spectra/Richard/DR15/Plots/Decrements/' + savestring,bbox_inches='tight',dpi=300)
@@ -1257,7 +1241,7 @@ def Scholars_Week_Plots(plot):
         plt.savefig('/Users/ballanr/Desktop/test.png',bbox_inches='tight',dpi=300)
 
 
-Master_Catalog('/Users/ballanr/Desktop/Research/DR15/Master_File_List.csv')
+#Master_Catalog('/Users/ballanr/Desktop/Research/DR15/Master_File_List.csv')
 #Scholars_Week_Plots('Density')
 
 # import itertools
