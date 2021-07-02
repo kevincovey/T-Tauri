@@ -16,11 +16,11 @@ import os
 
 
 
-#Emitters_Model_csv()
+Emitters_Model_csv()
 
 #Brackett_Decrement_Plot(9753,57859,198)
 #Brackett_Decrement_Plot(6103,56204,106)
-Brackett_Decrement_Plot(6219,56170,101)
+#Brackett_Decrement_Plot(6219,56170,101)
 #(7079,56561,141)
 #Brackett_Decrement_Plot(8884,57676,279)
 
