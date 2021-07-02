@@ -124,7 +124,7 @@ def Emitters_Model_csv():
     df['Temp'] = temp
     df['Chi Squared'] = ChiSquareList
     
-    df.to_csv(Localpath() + '/DR15/Spectra Files/Emitters_Comparison_ChiRightOnly.csv', index=False)
+    df.to_csv(Localpath() + '/DR15/Spectra Files/Emitters_Comparison.csv', index=False)
        
 
 def Model_Comparison():
@@ -133,7 +133,7 @@ def Model_Comparison():
     import numpy as np
     
     # Sets up each column of Emitters_Comparison as a list
-    Emitters_Compare_Path = Localpath() + '/DR15/Spectra Files/Emitters_Comparison_ChiRightOnly.csv'
+    Emitters_Compare_Path = Localpath() + '/DR15/Spectra Files/Emitters_Comparison_ChiBothSides.csv'
     Emitters_Comparison = pd.read_csv(Emitters_Compare_Path)
     
     Comp_plate = Emitters_Comparison['Plate'].tolist()
@@ -169,9 +169,10 @@ def Model_Comparison():
                 # Checks whether all the densities, temps, and chis are equal
                 # If one of those isn't equal, it tells me which and what values they have
                 
-                if (Comp_dens[i] == Emit_dens[j]) and (Comp_temp[i] == Emit_temp[j] and (Comp_chisquare[i] == Emit_chisquare[j])):
+                if (Comp_dens[i] == Emit_dens[j]) and (Comp_temp[i] == Emit_temp[j]) and (round(Comp_chisquare[i],6) == round(Emit_chisquare[j],6)):
                     print(str(Comp_plate[i]) + '-' + str(Comp_mjd[i]) + '-' + str(Comp_fiber[i]) + ': ')
-                    print('All Equal! \n')
+                    print('All Equal!')
+                    
                     
                 elif Comp_dens[i] != Emit_dens[j]:
                     print(str(Comp_plate[i]) + '-' + str(Comp_mjd[i]) + '-' + str(Comp_fiber[i]) + ': ')
@@ -186,11 +187,7 @@ def Model_Comparison():
                     print('Comparison Chi Square: ', Comp_chisquare[i], '\n Emitter Chi Square: ', Emit_chisquare[j], '\n')
                 
         
-                    
-                    
-                    
-    
-    
+
     
     return
 

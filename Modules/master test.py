@@ -11,12 +11,12 @@ from master import *
 import os
 
 
-#Model_Comparison()
+Model_Comparison()
 
 
 
 
-Emitters_Model_csv()
+#Emitters_Model_csv()
 
 #Brackett_Decrement_Plot(9753,57859,198)
 #Brackett_Decrement_Plot(6103,56204,106)
