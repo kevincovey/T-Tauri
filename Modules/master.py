@@ -24,6 +24,11 @@ def Localpath():
         # reads the line specific to the user
         path = file.readlines()[1]
         
+    elif str(pathlib.Path(__file__).parent.absolute()) == '/Users/astroadmin/Documents/GitHub/T-Tauri/Modules':
+        
+            file = open('/Users/astroadmin/Documents/GitHub/T-Tauri/localpath.txt','r')
+            
+            path = file.readlines()[2]
     
     path = path.rstrip("\n")
         
