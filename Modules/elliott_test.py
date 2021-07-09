@@ -24,7 +24,10 @@ def Wavelength_Flux_Plot(plate,mjd,fiber):
 
 # sets up reading the csv files in emitters folder only for me (EK)
     #serverpath = '/Users/ellio/Desktop/Research/DR15/Spectra Files/Emitters/'
-    serverpath = '/Users/khilfek/Covey/APOGEE_Spectra/Elliott/DR15/Spectra Files/Emitters/'    
+    #serverpath = '/Users/khilfek/Covey/APOGEE_Spectra/Elliott/DR15/Spectra Files/Emitters/'    
+
+#### NOTE!  KEVIN CHANGED THE PATH!
+    serverpath = '/Users/coveyk/Dropbox/python/T-Tauri/Summer_2021/dataFiles/DR15/Spectra Files/Emitters/'    
     
     filepath = serverpath + str(plate) + '-' + str(mjd) + '-' + str(fiber) + '.csv'
     openfile = pd.read_csv(filepath)
@@ -33,26 +36,45 @@ def Wavelength_Flux_Plot(plate,mjd,fiber):
     wave = openfile['Wavelength']
     flux = openfile['Flux']
     a = np.where(flux>-100)[0]
-    flux=flux[a]
-    wave=wave[a]
- 
+    flux=np.array(flux[a])    #Kevin is not used to pandas, so he converted the flux and wave columns to numpy arrays.
+    wave=np.array(wave[a])    #having these elements as numpy arrays allowed Kevin to use np.where and np.percentile below
+    
+    #define the blue, green, and red chips
+    blue = np.where( (wave > 15140) & (wave < 15810) )    #having the wave column as a numpy array made selecting the wavelengths
+    green = np.where( (wave > 15855) & (wave < 16435) )   #in each chip much easier.
+    red = np.where( (wave > 16470) & (wave < 16955) )
+
+    #find the values that should be used to set the ylims for each panel
+    #do this using the np.percentile command to exclude the few highest and lowest pixels in each array,
+    #as they often ruin the y scaling
+    blue_max = 1.1*np.percentile(flux[blue], 99.5)
+    blue_min = 0.9*np.percentile(flux[blue], 0.5)
+    
+    green_max = 1.1*np.percentile(flux[green], 99.5)
+    green_min = 0.9*np.percentile(flux[green], 0.5)
+
+    red_max = 1.1*np.percentile(flux[red], 99.5)
+    red_min = 0.9*np.percentile(flux[red], 0.5)
+
 # This makes the plots of flux vs emitter 
     
     fig, (ax, ax2, ax3) = plt.subplots(3)
     fig.suptitle('Flux vs. Wavelength of Emitter ' + str(plate) + '-' + str(mjd) + '-' + str(fiber))
     fig.tight_layout()
+    #kevin set the plot size to be large, so it would print well.
+    fig.set_size_inches(11, 8)
     
-    ax.plot(wave, flux, color='k', linewidth=.4)
-    ax2.plot(wave, flux, color='k', linewidth=.4)
-    ax3.plot(wave, flux, color='k', linewidth=.4)
+    ax.plot(wave[blue], flux[blue], color='k', linewidth=.4)
+    ax2.plot(wave[green], flux[green], color='k', linewidth=.4)
+    ax3.plot(wave[red], flux[red], color='k', linewidth=.4)
 
-    ax.set_xlim(16470,16955)
+    ax.set_xlim(15140,15810)
     ax2.set_xlim(15855,16435)
-    ax3.set_xlim(15140,15810)
+    ax3.set_xlim(16470,16955)
     
-    ax.set_ylim(50,350)
-    ax2.set_ylim(50,350)
-    ax3.set_ylim(50,350)
+    ax.set_ylim(blue_min,blue_max)
+    ax2.set_ylim(green_min,green_max)
+    ax3.set_ylim(red_min,red_max)
     
     #plt.autoscale(enable=True, axis='y' ,tight='True')
     
@@ -82,6 +104,12 @@ def Wavelength_Flux_Plot(plate,mjd,fiber):
   
     plt.xlabel('Wavelength (\u00C5)')
     plt.ylabel('Flux')
+
+    #save a digital copy of the figure as a file; do this in the emitters folder where the csv lives.
+    plt.savefig(serverpath+str(plate) + '-' + str(mjd) + '-' + str(fiber)+'.png', dpi=100)
+
+    #close the plot because failing to do so would consume a lot of memory.
+    plt.close()
     
     #ax2.xlabel('Wavelength (\u00C5)')
     #ax2.ylabel('Flux (10^-17 erg/s/cm^2/\u00C5)')
@@ -89,13 +117,25 @@ def Wavelength_Flux_Plot(plate,mjd,fiber):
     #ax3.ylabel('Flux (10^-17 erg/s/cm^2/\u00C5)')
     
     #plt.show()
+
+
+#modify the main script so that it makes plots for everything in the emitters list csv file.
+
+#import pandas so we can open the csv as a panda
+import pandas as pd
+
+#read in the emitters list
+openfile = pd.read_csv('/Users/coveyk/Dropbox/python/T-Tauri/Summer_2021/dataFiles/DR15/Emitters_List_DR15.csv')
+
+#pull the plate, mjd and fiber columns out of the csv file
+plate = openfile['Plate']
+mjd = openfile['MJD']
+fiber = openfile['Fiber']
+
+#loop through every object in the input list, and use the Wavelength_Flux_Plot function to make a plot of it.
+for x in range(len(plate)):
+    Wavelength_Flux_Plot(plate[x],mjd[x],fiber[x])
     
-#I just chose the first 5 emitters in the Emitters folder
-#Wavelength_Flux_Plot(6103, 56204, 105)
-#Wavelength_Flux_Plot(6103, 56204, 106)
-#Wavelength_Flux_Plot(6103, 56204, 133)
-Wavelength_Flux_Plot(6103, 56204, 189)
-#Wavelength_Flux_Plot(6103, 56230, 93)
 
  
 
