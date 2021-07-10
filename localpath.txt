@@ -1,2 +1,3 @@
 /Users/Table/Desktop/Research/Hunter
 /Users/coveyk/Dropbox/python/T-Tauri/Summer_2021/dataFiles
+/Users/astroadmin/Covey/APOGEE_Spectra/Hunter
