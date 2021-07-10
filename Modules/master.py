@@ -803,6 +803,7 @@ def Decrement_Model(equivs,equiverr):
     Chi = []
 
     # Calculations
+    # Looping through each model
     for i in range(len(cols)):
 
         chi_squared = 0
@@ -812,14 +813,22 @@ def Decrement_Model(equivs,equiverr):
         
        
 
-
+        # Looping through each transition/line in the model
         for k in range(len(probs)):
             # Calculating numerator
+           
+            #Normalizes the measured line strength to Brackett 11
             ratio = equivs[k] / equivs[0]
+           
+            # Calculates the residual between the normalized observed line
+            # and the normalized model line strength
             numerator = ratio - (probs[k] / probs[0])
             numerator = numerator**2
 
             # Calculating denominator
+            # Expressing uncertainty in observed ratio
+            # Finds fractional error in k line and fractional error in 
+            # Brackett 11, adds them in quadrature, then multiplies by ratio
             sigma = ratio * np.sqrt((equiverr[k] / equivs[k])**2 + (equiverr[0] / equivs[0])**2)
 
 
